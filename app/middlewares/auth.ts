@@ -1,10 +1,8 @@
 import { ORPCError, os } from "@orpc/server";
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
-import { KindeUser } from "@kinde-oss/kinde-auth-nextjs/types";
-import { cache } from "react";
+import { User } from "../schemas/user";
 
 export const requiredAuthMiddleware = os
-  .$context<{ session?: { user?: KindeUser<Record<string, any>> } }>()
+  .$context<{ session?: { user?: User } }>()
   .middleware(async ({ context, next }) => {
     /**
      * Why we should ?? here?
@@ -22,11 +20,18 @@ export const requiredAuthMiddleware = os
     });
   });
 
-const getSession = cache(async () => {
-  const { getUser } = getKindeServerSession();
-  const user = await getUser();
+async function getSession() {
+  /**
+   * You can use headers or cookies here to create the user object:
+   * import { cookies, headers } from 'next/headers'
+   * const headerList = await headers();
+   * const cookieList = await cookies();
+   *
+   * These lines are commented out because Stackblitz has issues with Next.js headers and cookies.
+   * However, this works fine in a local environment.
+   */
 
-  return { user };
-});
+  return { user: { id: "unique", name: "unnoq", email: "contact@unnoq.com" } };
+}
 
 export const authed = os.use(requiredAuthMiddleware);
