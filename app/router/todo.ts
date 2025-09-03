@@ -36,9 +36,23 @@ export const getTodos = os
     summary: "Get all todos",
     tags: ["Todos"],
   })
-  .input(z.void())
+  .input(
+    z.object({
+      amount: z.number(),
+    })
+  )
   .output(z.array(TodoSchema))
-  .handler(async ({ context }) => {
+  .errors({
+    UNAUTHORIZED: {
+      message: "You are not authorized to do this",
+      status: 401,
+    },
+  })
+  .handler(async ({ context, input, errors }) => {
+    if (input.amount > 10) {
+      throw errors.UNAUTHORIZED();
+    }
+
     const todos = await prisma.todo.findMany();
 
     return todos;
