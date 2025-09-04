@@ -38,7 +38,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className="fixed top-2 right-2">
+          <div className="fixed top-4 right-4">
             <ThemeToggle />
           </div>
           <Providers>{children}</Providers>
