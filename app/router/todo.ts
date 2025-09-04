@@ -4,12 +4,6 @@ import { TodoSchema } from "../schemas/todo";
 import prisma from "@/lib/db";
 
 export const createTodo = os
-  .route({
-    method: "POST",
-    path: "/todos",
-    summary: "Create a new todo",
-    tags: ["Todos"],
-  })
   .input(
     z.object({
       title: z.string(),
@@ -19,23 +13,17 @@ export const createTodo = os
   .output(TodoSchema)
 
   .handler(async ({ context, input }) => {
-    const channel = await prisma.todo.create({
+    const todo = await prisma.todo.create({
       data: {
         title: input.title,
         description: input.description,
       },
     });
 
-    return channel;
+    return todo;
   });
 
 export const getTodos = os
-  .route({
-    method: "GET",
-    path: "/todos",
-    summary: "Get all todos",
-    tags: ["Todos"],
-  })
   .input(
     z.object({
       amount: z.number(),

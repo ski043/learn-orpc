@@ -3,8 +3,8 @@ import { createTodo, getTodos } from "./todo";
 
 export const router = {
   todo: {
-    create: createTodo,
-    get: getTodos,
+    createTodo: createTodo,
+    getTodos: getTodos,
   },
   auth: {
     signup,

@@ -21,17 +21,15 @@ export const requiredAuthMiddleware = os
   });
 
 async function getSession() {
-  /**
-   * You can use headers or cookies here to create the user object:
-   * import { cookies, headers } from 'next/headers'
-   * const headerList = await headers();
-   * const cookieList = await cookies();
-   *
-   * These lines are commented out because Stackblitz has issues with Next.js headers and cookies.
-   * However, this works fine in a local environment.
-   */
+  // get the actual user session please
 
-  return { user: { id: "unique", name: "unnoq", email: "contact@unnoq.com" } };
+  return {
+    user: {
+      id: "askldfjalöksdfj",
+      name: "Jan Marshal",
+      email: "jan@alenix.de",
+    },
+  };
 }
 
 export const authed = os.use(requiredAuthMiddleware);
