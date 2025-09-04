@@ -4,8 +4,6 @@ import { onError } from "@orpc/server";
 import { experimental_SmartCoercionPlugin as SmartCoercionPlugin } from "@orpc/json-schema";
 import { ZodToJsonSchemaConverter } from "@orpc/zod/zod4";
 import { OpenAPIReferencePlugin } from "@orpc/openapi/plugins";
-import { TodoSchema } from "@/app/schemas/todo";
-import z from "zod";
 import { NewUserSchema, UserSchema } from "@/app/schemas/user";
 import { CredentialSchema, TokenSchema } from "@/app/schemas/auth";
 const openAPIHandler = new OpenAPIHandler(router, {
@@ -26,7 +24,6 @@ const openAPIHandler = new OpenAPIHandler(router, {
           version: "1.0.0",
         },
         commonSchemas: {
-          Todo: { schema: TodoSchema },
           NewUser: { schema: NewUserSchema },
           User: { schema: UserSchema },
           Credential: { schema: CredentialSchema },
