@@ -23,6 +23,7 @@ const openAPIHandler = new OpenAPIHandler(router, {
           title: "ORPC Playground",
           version: "1.0.0",
         },
+
         commonSchemas: {
           NewUser: { schema: NewUserSchema },
           User: { schema: UserSchema },

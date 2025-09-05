@@ -1,3 +1,4 @@
+import { me, signin, signup } from "./auth";
 import { createTodo, getTodos } from "./todo";
 
 export const router = {
@@ -5,9 +6,9 @@ export const router = {
     createTodo: createTodo,
     getTodos: getTodos,
   },
-  /*   auth: {
-    signup,
-    signin,
-    me,
-  }, */
+  auth: {
+    signup: signup,
+    signin: signin,
+    me: me,
+  },
 };

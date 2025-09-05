@@ -1,9 +1,10 @@
-import { os } from "@orpc/server";
+import { ORPCError, os } from "@orpc/server";
 import z from "zod";
 import { TodoSchema } from "../schemas/todo";
 import prisma from "@/lib/db";
+import { authed } from "../middlewares/auth";
 
-export const createTodo = os
+export const createTodo = authed
   .input(
     z.object({
       title: z.string(),
@@ -11,7 +12,6 @@ export const createTodo = os
     })
   )
   .output(TodoSchema)
-
   .handler(async ({ context, input }) => {
     const todo = await prisma.todo.create({
       data: {
@@ -23,7 +23,7 @@ export const createTodo = os
     return todo;
   });
 
-export const getTodos = os
+export const getTodos = authed
   .input(
     z.object({
       amount: z.number(),
@@ -31,14 +31,15 @@ export const getTodos = os
   )
   .output(z.array(TodoSchema))
   .errors({
-    UNAUTHORIZED: {
+    FORBIDDEN: {
       message: "You are not authorized to do this",
-      status: 401,
+      status: 403,
     },
   })
+
   .handler(async ({ context, input, errors }) => {
     if (input.amount > 10) {
-      throw errors.UNAUTHORIZED();
+      throw errors.FORBIDDEN();
     }
 
     const todos = await prisma.todo.findMany();

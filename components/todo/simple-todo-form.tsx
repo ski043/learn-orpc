@@ -1,22 +1,28 @@
 "use client";
 
 import { useState } from "react";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { client } from "@/lib/orpc";
 
 interface TodoFormValues {
   title: string;
   description: string;
 }
 
-interface SimpleTodoFormProps {
-  onSubmit?: (values: TodoFormValues) => Promise<void> | void;
-}
-
-export function SimpleTodoForm({ onSubmit }: SimpleTodoFormProps) {
+export function SimpleTodoForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [lastSubmitted, setLastSubmitted] = useState<TodoFormValues | null>(null);
+  const [lastSubmitted, setLastSubmitted] = useState<TodoFormValues | null>(
+    null
+  );
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -32,9 +38,10 @@ export function SimpleTodoForm({ onSubmit }: SimpleTodoFormProps) {
     try {
       // TODO: mutate using your ORPC procedure here, e.g.:
       // await client.todo.createTodo(values)
-      if (onSubmit) await onSubmit(values);
+
+      await client.todo.createTodo(values);
+
       setLastSubmitted(values);
-      event.currentTarget.reset();
     } finally {
       setIsSubmitting(false);
     }
@@ -45,7 +52,9 @@ export function SimpleTodoForm({ onSubmit }: SimpleTodoFormProps) {
       <Card>
         <CardHeader>
           <CardTitle>Create Todo</CardTitle>
-          <CardDescription>Add a title and description, then submit.</CardDescription>
+          <CardDescription>
+            Add a title and description, then submit.
+          </CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit} className="contents">
           <CardContent className="space-y-4">
